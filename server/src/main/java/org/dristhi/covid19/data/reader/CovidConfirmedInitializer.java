@@ -71,8 +71,7 @@ public class CovidConfirmedInitializer extends AbstractCsvToDatabaseInitializer<
                     = CovidConfirmed.class.getMethod(methodName, int.class);
             method.invoke(entity, Integer.parseInt(csvRecord.get(property)));
         } catch (Exception e) {
-            log.error("method: " + methodName + " property: " + property);
-            e.printStackTrace();
+            log.error("Failed to invoke method: " + methodName + " with property: " + property);
         }
     }
 }
