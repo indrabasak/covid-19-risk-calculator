@@ -26,3 +26,6 @@ data:
       multipliers:
         1: 0.76
         2: 0.47
+
+csv:
+  covidcountypopulation: classpath:/data/covid_county_population_usafacts.csv

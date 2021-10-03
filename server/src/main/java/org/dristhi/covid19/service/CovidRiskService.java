@@ -15,16 +15,17 @@ public class CovidRiskService {
     }
 
     public double calculate(RiskRequest request) {
-        double multiplier = calculateVaccineRisk(request.getVaccine(), request.getDoses());
+        double multiplier = calculateVaccineRisk(request.getVaccine().getProvider(),
+                request.getVaccine().getDoses());
 
         return multiplier;
     }
 
-    private double calculateVaccineRisk(String vaccineName, int doses) {
+    private double calculateVaccineRisk(String provider, int doses) {
         DataProperties.Vaccine vaccine;
 
-        if (properties.getVaccines().containsKey(vaccineName.toLowerCase(Locale.ROOT))) {
-            vaccine = properties.getVaccines().get(vaccineName.toLowerCase(Locale.ROOT));
+        if (properties.getVaccines().containsKey(provider.toLowerCase(Locale.ROOT))) {
+            vaccine = properties.getVaccines().get(provider.toLowerCase(Locale.ROOT));
         } else {
             vaccine = properties.getVaccines().get("unknown");
         }
