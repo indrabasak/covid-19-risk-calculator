@@ -17,15 +17,17 @@ import org.springframework.core.io.ResourceLoader;
 public abstract class AbstractCsvToDatabaseInitializer<T> {
 
     public List<T> convertCsv(InputStream istream) {
-        try (BufferedReader fileReader =
-                     new BufferedReader(new InputStreamReader(istream, StandardCharsets.UTF_8));
-             CSVParser csvParser = new CSVParser(fileReader,
-                     CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());) {
+        try {
+            BufferedReader reader =
+                    new BufferedReader(new InputStreamReader(istream, StandardCharsets.UTF_8));
+            CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
+                    .setHeader().setSkipHeaderRecord(true)
+                    .setIgnoreHeaderCase(true)
+                    .setTrim(true).build();
+            CSVParser csvParser = new CSVParser(reader, csvFormat);
 
             List<T> list = new ArrayList<>();
-
             Iterable<CSVRecord> records = csvParser.getRecords();
-
             for (CSVRecord csvRecord : records) {
                 list.add(parse(csvRecord));
             }

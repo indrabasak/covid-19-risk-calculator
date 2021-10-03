@@ -15,10 +15,8 @@ public class CovidRiskService {
     }
 
     public double calculate(RiskRequest request) {
-        double multiplier = calculateVaccineRisk(request.getVaccine().getProvider(),
+        return calculateVaccineRisk(request.getVaccine().getProvider(),
                 request.getVaccine().getDoses());
-
-        return multiplier;
     }
 
     private double calculateVaccineRisk(String provider, int doses) {

@@ -16,8 +16,6 @@ public class CovidCountyPopulation {
     @Id
     private String state;
 
-    private String stateFips;
-
     private String county;
 
     private int population;
