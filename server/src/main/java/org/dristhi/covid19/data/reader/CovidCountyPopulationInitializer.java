@@ -46,7 +46,7 @@ public class CovidCountyPopulationInitializer implements CommandLineRunner {
 
     private List<CovidCountyPopulation> convertCsv(InputStream istream) {
         try (BufferedReader fileReader =
-                     new BufferedReader(new InputStreamReader(istream, StandardCharsets.UTF_16));
+                     new BufferedReader(new InputStreamReader(istream, StandardCharsets.UTF_8));
              CSVParser csvParser = new CSVParser(fileReader,
                      CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());) {
 
@@ -56,7 +56,7 @@ public class CovidCountyPopulationInitializer implements CommandLineRunner {
 
             for (CSVRecord csvRecord : csvRecords) {
                 CovidCountyPopulation population = new CovidCountyPopulation();
-                population.setFips(Integer.parseInt(csvRecord.get("countyFIPS")));
+                population.setFips(Integer.parseInt(csvRecord.get("\uFEFFcountyFIPS")));
                 population.setName(csvRecord.get("County Name"));
                 population.setState(csvRecord.get("State"));
                 population.setPopulation(Integer.parseInt(csvRecord.get("population")));
