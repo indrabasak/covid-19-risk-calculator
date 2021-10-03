@@ -37,3 +37,33 @@ spring:
       path: /h2-console/
   datasource:
     url: jdbc:h2:mem:testdb
+
+# Exaposes actuation endpoints
+management:
+  security:
+    enabled: false
+  health:
+    defaults:
+      enabled: true
+    diskspace:
+      enabled: true
+#    probes:
+#      enabled: true
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+      group:
+        readiness:
+          include: readinessProbe
+          show-details: always
+
+info:
+  artifact: "@project.artifactId@"
+  name: "@project.name@"
+  description: "@project.description@"
+  version: "@project.version@"

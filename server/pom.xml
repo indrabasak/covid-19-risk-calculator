@@ -5,19 +5,21 @@
     <parent>
         <groupId>org.dristhi.covid19</groupId>
         <artifactId>covid-19-risk-calculator</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>server</artifactId>
 
     <properties>
+        <commons.csv.version>1.9.0</commons.csv.version>
         <h2.version>1.4.200</h2.version>
         <java.version>11</java.version>
         <lombok.version>1.18.20</lombok.version>
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
         <opencsv.version>5.5.2</opencsv.version>
         <spring.boot.version>2.5.4</spring.boot.version>
+        <sprigfox.version>3.0.0</sprigfox.version>
     </properties>
 
     <dependencyManagement>
@@ -52,6 +54,11 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-actuator-autoconfigure</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-rest</artifactId>
         </dependency>
 
@@ -60,6 +67,12 @@
             <artifactId>h2</artifactId>
             <version>${h2.version}</version>
             <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>${sprigfox.version}</version>
         </dependency>
 
         <dependency>
@@ -72,7 +85,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
-            <version>1.9.0</version>
+            <version>${commons.csv.version}</version>
         </dependency>
 
         <dependency>
