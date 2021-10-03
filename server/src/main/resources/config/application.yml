@@ -2,6 +2,9 @@ server:
   port: 8080
 
 data:
+  csv:
+    covidCountyPopulation: classpath:/data/covid_county_population_usafacts.csv
+    covidConfirmed: classpath:/data/covid_confirmed_usafacts.csv
   vaccines:
     pfizer:
       multipliers:
@@ -26,9 +29,6 @@ data:
       multipliers:
         1: 0.76
         2: 0.47
-
-csv:
-  covidcountypopulation: classpath:/data/covid_county_population_usafacts.csv
 
 spring:
   h2:

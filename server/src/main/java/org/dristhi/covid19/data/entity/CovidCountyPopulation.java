@@ -6,17 +6,19 @@ import javax.persistence.IdClass;
 import lombok.Data;
 
 @Entity
-@IdClass(CovidCountyPopulationId.class)
+@IdClass(CountyFipsStateId.class)
 @Data
 public class CovidCountyPopulation {
 
     @Id
     private int fips;
 
-    private String name;
-
     @Id
     private String state;
+
+    private String stateFips;
+
+    private String county;
 
     private int population;
 }

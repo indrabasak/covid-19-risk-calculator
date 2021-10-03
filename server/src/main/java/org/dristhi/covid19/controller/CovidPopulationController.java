@@ -18,7 +18,7 @@ public class CovidPopulationController {
 
     @GetMapping("/population/{state}/{county}")
     public int getPopulationByStateAndCounty(@PathVariable String state, @PathVariable String county) {
-       List<CovidCountyPopulation> list = repository.findByStateAndName(state, county + " County");
+       List<CovidCountyPopulation> list = repository.findByStateAndCounty(state, county + " County");
        if (list.size() > 0) {
            return list.get(0).getPopulation();
        }

@@ -11,6 +11,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Setter
 public class DataProperties {
 
+    private Map<String, String> csv = new HashMap<>();
+
     private Map<String, Vaccine> vaccines = new HashMap<>();
 
     @Getter
@@ -18,4 +20,11 @@ public class DataProperties {
     public static class Vaccine {
         private Map<Integer, Double> multipliers = new HashMap<>();
     }
+
+    @Getter
+    @Setter
+    public static class Csv {
+        private String path;
+    }
+
 }

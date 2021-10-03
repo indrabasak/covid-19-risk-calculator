@@ -1,84 +1,49 @@
 package org.dristhi.covid19.data.reader;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.dristhi.covid19.config.DataProperties;
 import org.dristhi.covid19.data.entity.CovidCountyPopulation;
 import org.dristhi.covid19.data.repository.CovidCountyPopulationRepository;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class CovidCountyPopulationInitializer implements CommandLineRunner {
+public class CovidCountyPopulationInitializer
+        extends AbstractCsvToDatabaseInitializer<CovidCountyPopulation>
+        implements CommandLineRunner {
 
     private final ResourceLoader loader;
 
-    private final String location;
+    private final DataProperties properties;
 
     private final CovidCountyPopulationRepository repository;
 
     public CovidCountyPopulationInitializer(ResourceLoader loader,
-                                            @Value("${csv.covidcountypopulation}") String location,
+                                            DataProperties properties,
                                             CovidCountyPopulationRepository repository) {
         this.loader = loader;
-        this.location = location;
+        this.properties = properties;
         this.repository = repository;
     }
 
+    @Override
+    public void run(String... args) {
+        List<CovidCountyPopulation> list = convertCsv(getResource(loader, properties.getCsv().get("covidCountyPopulation")));
+        list.forEach(repository::save);
+    }
 
     @Override
-    public void run(String... args) throws Exception {
-        InputStream istream = getResource(loader, location);
-        List<CovidCountyPopulation> list = convertCsv(istream);
-        list.stream().forEach(p -> repository.save(p));
-    }
+    public CovidCountyPopulation parse(CSVRecord csvRecord) {
+        CovidCountyPopulation row = new CovidCountyPopulation();
+        row.setFips(Integer.parseInt(csvRecord.get("\uFEFFcountyFIPS")));
+        row.setCounty(csvRecord.get("County Name"));
+        row.setState(csvRecord.get("State"));
+        row.setPopulation(Integer.parseInt(csvRecord.get("population")));
 
-    private List<CovidCountyPopulation> convertCsv(InputStream istream) {
-        try (BufferedReader fileReader =
-                     new BufferedReader(new InputStreamReader(istream, StandardCharsets.UTF_8));
-             CSVParser csvParser = new CSVParser(fileReader,
-                     CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());) {
-
-            List<CovidCountyPopulation> populationList = new ArrayList<>();
-
-            Iterable<CSVRecord> csvRecords = csvParser.getRecords();
-
-            for (CSVRecord csvRecord : csvRecords) {
-                CovidCountyPopulation population = new CovidCountyPopulation();
-                population.setFips(Integer.parseInt(csvRecord.get("\uFEFFcountyFIPS")));
-                population.setName(csvRecord.get("County Name"));
-                population.setState(csvRecord.get("State"));
-                population.setPopulation(Integer.parseInt(csvRecord.get("population")));
-                populationList.add(population);
-            }
-
-            return populationList;
-        } catch (IOException e) {
-            throw new RuntimeException("fail to parse CSV file: " + e.getMessage());
-        }
-    }
-
-
-    private InputStream getResource(ResourceLoader loader, String location) {
-        InputStream istream = null;
-        try {
-            istream = loader.getResource(location).getInputStream();
-            log.info(location + " found!");
-        } catch (IOException e) {
-            log.debug(location + " not found!", e);
-        }
-
-        return istream;
+        return row;
     }
 }
