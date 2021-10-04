@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class CovidConfirmedInitializer extends AbstractCsvToDatabaseInitializer<CovidConfirmed>
-        implements CommandLineRunner {
+public class CovidConfirmedInitializer implements
+        AbstractCsvToDatabaseInitializer<CovidConfirmed>, CommandLineRunner {
 
     private final ResourceLoader loader;
 
@@ -71,7 +71,7 @@ public class CovidConfirmedInitializer extends AbstractCsvToDatabaseInitializer<
                     = CovidConfirmed.class.getMethod(methodName, int.class);
             method.invoke(entity, Integer.parseInt(csvRecord.get(property)));
         } catch (Exception e) {
-            log.error("Failed to invoke method: " + methodName + " with property: " + property);
+            log.error("Failed to invoke method: {} with property {}.", methodName, property);
         }
     }
 }

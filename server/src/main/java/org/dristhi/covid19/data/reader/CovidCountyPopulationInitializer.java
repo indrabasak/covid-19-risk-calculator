@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class CovidCountyPopulationInitializer
-        extends AbstractCsvToDatabaseInitializer<CovidCountyPopulation>
-        implements CommandLineRunner {
+        implements AbstractCsvToDatabaseInitializer<CovidCountyPopulation>,
+        CommandLineRunner {
 
     private final ResourceLoader loader;
 
