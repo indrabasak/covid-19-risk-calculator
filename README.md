@@ -91,6 +91,25 @@ $ docker server
 server
 ```
 
+### Docker Compose 
+
+#### Run
+To run docker compose, execute the following command from the parent
+project directory, `covid-19-risk-calculator`:
+
+```
+ docker-compose up --build
+```
+
+This should start up the server in port 8080.
+
+#### Stop
+To shutdown docker compose, execute the following command:
+
+```
+docker-compose down
+```
+
 [github-action-badge]: https://github.com/indrabasak/covid-19-risk-calculator/actions/workflows/main.yml/badge.svg
 
 [sonarqube-badge]: https://sonarcloud.io/api/project_badges/measure?project=org.dristhi.covid19%3Acovid-19-risk-calculator&metric=alert_status

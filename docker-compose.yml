@@ -1,0 +1,17 @@
+version: '3.9'
+services:
+  message-server:
+    container_name: server
+    build:
+      context: server
+      dockerfile: Dockerfile
+      args:
+        JAR_FILE: server-1.0.0-SNAPSHOT.jar
+    image: basaki/covid-19-risk-calculator-server:latest
+    ports:
+      - 8080:8080
+    networks:
+      - spring-cloud-network
+networks:
+  spring-cloud-network:
+    driver: bridge
